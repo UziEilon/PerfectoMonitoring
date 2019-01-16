@@ -27,3 +27,9 @@ Copy the Jenkins/exec.sh script into the Jenkins
 ## Perfecto Dashboard 
 Perfecto reporting tool shows the execution dashboard, this view used to show the monitoring status
 ![import](resources/report.png?raw=true "report")
+
+## Notifications
+In order to send notification I use Jenkins "post build task".
+This task will verify both scripts ended with errors (on both of the devices), 
+by looking for the test "both scripts ended with errors" in the build log and send the notification.
+![import](resources/postBuild.png?raw=true "report")

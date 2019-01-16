@@ -14,11 +14,19 @@ JOB_NAME="test123"
 BUILD_NUMBER="12"
 SCRIPT="PRIVATE:shellTest.xml"
 
+getExeDate()
+{
+        if [ -z "$TIME" ]
+        then
+            TIME=`date "+%H:%M"`
+        fi
+}
 exeScript()
 {
     l_scrip=$1
     l_device=$2
-    URL_EXE="https://$CLOUD/services/executions?operation=execute&scriptkey=$l_scrip&responseformat=xml&param.DUT=$l_device&param.jobName=$JOB_NAME&param.jobNumber=$BUILD_NUMBER&securityToken=$TOKEN"
+    getExeDate
+    URL_EXE="https://$CLOUD/services/executions?operation=execute&scriptkey=$l_scrip&responseformat=xml&param.DUT=$l_device&param.jobName=$JOB_NAME&param.jobNumber=$TIME&securityToken=$TOKEN"
     response="$(curl $URL_EXE)"
     execID=$( echo $response | awk -v FS="(executionId>|</executionId)" '{print $2}')
     

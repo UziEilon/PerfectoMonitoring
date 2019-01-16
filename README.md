@@ -10,3 +10,10 @@ This project contains:
 * Jenkins lib: Explain how to configure and store the shall scripts which execute the scripts from jenkin
 * Notifications: Java code which send notification based on errors 
 
+Jenkins config:
+Add the following parameters:
+* Cloud
+* Token
+* Script
+
+![import](resources/JenkinsParams.png?raw=true "params")

@@ -1,3 +1,4 @@
+#!/bin/bash
 # set up parameters named in Jenkins
 # cloud
 # token
@@ -10,14 +11,14 @@ TOKEN="eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJMWTVZal9BamtfWUplRUJCU
 DEVICE1="95ECD130589BCBAB30B1412A7981091E3922DC60"
 DEVICE2="988667325047395643"
 JOB_NAME="test123"
-JOB_NUMBER="12"
+BUILD_NUMBER="12"
 SCRIPT="PRIVATE:shellTest.xml"
 
 exeScript()
 {
     l_scrip=$1
     l_device=$2
-    URL_EXE="https://$CLOUD/services/executions?operation=execute&scriptkey=$l_scrip&responseformat=xml&param.DUT=$l_device&param.jobName=$JOB_NAME&param.jobNumber=$JOB_NUMBER&securityToken=$TOKEN"
+    URL_EXE="https://$CLOUD/services/executions?operation=execute&scriptkey=$l_scrip&responseformat=xml&param.DUT=$l_device&param.jobName=$JOB_NAME&param.jobNumber=$BUILD_NUMBER&securityToken=$TOKEN"
     response="$(curl $URL_EXE)"
     execID=$( echo $response | awk -v FS="(executionId>|</executionId)" '{print $2}')
     
@@ -117,6 +118,7 @@ then
         if [ $scrip2Status == 1 ]
         then
             echo "Both scripts ended woth ERROR "
+            exit -1
         fi
     fi
 

@@ -17,3 +17,9 @@ Add the following parameters:
 * Script
 
 ![import](resources/JenkinsParams.png?raw=true "params")
+
+In order to execute the scripts (in parallel on two devices) add device1 and device2 as parameters too.
+![import](resources/paramsList.png?raw=true "paramsList")
+
+Copy the Jenkins/exec.sh script into the Jenkins
+![import](resources/build.png?raw=true "build")

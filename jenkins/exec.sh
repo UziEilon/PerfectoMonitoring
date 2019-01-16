@@ -26,18 +26,22 @@ exeScript()
 
 waitForScript()
 {
+    
     l_execID=$1
     msg=$2
+ 
     URL_CHECK_STATUS="https://$CLOUD/services/executions/$l_execID?operation=status&securityToken=$TOKEN"
     scriptResponse="$(curl $URL_CHECK_STATUS)"
+
     if [[ $scriptResponse == *"errorMessage"* ]] 
     then
         checkError "$scriptResponse"
     fi
 
-    # script ended most cases = device in use 
+    # if script ended in this point can be device in use or script2 ended before script 1
     if [[ $scriptResponse == *"status\":\"Completed\""* ]]
     then
+        echo "going to check error"
         checkError "$scriptResponse"
     else
          status="loop"
@@ -52,8 +56,8 @@ waitForScript()
            status="done"
          fi
         sleep 5
-        echo 'in wait loop:'$msg
-        echo 'status?:'$status
+        #echo 'in wait loop:'$msg
+        #echo 'status:'$status
 
     done
 }
@@ -61,7 +65,7 @@ waitForScript()
 checkError()
 {
      l_res=$1
-    if [[ $l_res == *"Failed to execute script - Access denied - bad credentials"* ]] 
+     if [[ $l_res == *"Failed to execute script - Access denied - bad credentials"* ]] 
     then
       echo "Failed to execute script - Access denied - bad credentials"
       exit -1
@@ -71,9 +75,22 @@ checkError()
     elif  [[ $l_res == *"errorMessage"* ]] 
     then
       echo $l_res
-    else
-      checkError $l_res
     fi
+}
+
+verifyScriptStatus()
+{
+    pass=0 #true
+    l_exeID=$1
+    URL_CHECK_STATUS="https://$CLOUD/services/executions/$l_execID?operation=status&securityToken=$TOKEN"
+    scriptResponse="$(curl $URL_CHECK_STATUS)"
+    #echo " * * * * * * scriptResponse"+$scriptResponse
+    if [[ $scriptResponse != *"flowEndCode\":\"Success\""* ]]
+    then
+      pass=1 #false
+     
+    fi
+    return $pass
 }
 
 
@@ -82,15 +99,27 @@ exeScript $SCRIPT $DEVICE1
 if [[ $response == *"<executionId>"* ]] 
 then
     executeScript1=$execID
+
     #execute script 2
     exeScript $SCRIPT $DEVICE2
     executeScript2=$execID
     waitForScript  $executeScript1 device1
     waitForScript  $executeScript2 device2 
+
+    # verify both scripts 
+    # if both ended with error type "error - need to notify"
+    verifyScriptStatus executeScript1
+    scrip1Status=$?
+    if [ $scrip1Status == 1 ]
+    then
+        verifyScriptStatus executeScript2
+        scrip2Status=$?
+        if [ $scrip2Status == 1 ]
+        then
+            echo "Both scripts ended woth ERROR "
+        fi
+    fi
+
 else
     checkError "$response"
 fi
-
-
-
-

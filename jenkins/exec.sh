@@ -18,7 +18,7 @@ getExeDate()
 {
         if [ -z "$TIME" ]
         then
-            TIME=`date "+%H:%M"`
+            TIME=`date "+%H%M"`
         fi
 }
 exeScript()
@@ -117,11 +117,11 @@ then
 
     # verify both scripts 
     # if both ended with error type "error - need to notify"
-    verifyScriptStatus executeScript1
+    verifyScriptStatus $executeScript1
     scrip1Status=$?
     if [ $scrip1Status == 1 ]
     then
-        verifyScriptStatus executeScript2
+        verifyScriptStatus $executeScript2
         scrip2Status=$?
         if [ $scrip2Status == 1 ]
         then

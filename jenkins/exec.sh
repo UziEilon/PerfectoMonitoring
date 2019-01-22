@@ -91,7 +91,7 @@ verifyScriptStatus()
 {
     pass=0 #true
     l_exeID=$1
-    URL_CHECK_STATUS="https://$CLOUD/services/executions/$l_execID?operation=status&securityToken=$TOKEN"
+    URL_CHECK_STATUS="https://$CLOUD/services/executions/$l_exeID?operation=status&securityToken=$TOKEN"
     scriptResponse="$(curl $URL_CHECK_STATUS)"
     #echo " * * * * * * scriptResponse"+$scriptResponse
     if [[ $scriptResponse != *"flowEndCode\":\"Success\""* ]]

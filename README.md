@@ -33,3 +33,10 @@ In order to send notification I use Jenkins "post build task".
 This task will verify both scripts ended with errors (on both of the devices), 
 by looking for the test "both scripts ended with errors" in the build log and send the notification.
 ![import](resources/postBuild.png?raw=true "report")
+
+
+Add SMS - in this example I used twilio, you can find the java code in notificationsUtils
+the package notificationUtils you can build (maven) and get a jar.
+This jar should be uploaded to the Jenkins and add the following line to the "post build task".
+
+java -jar notificationsMgr-1.0-SNAPSHOT.jar $JOB_NAME $PHONE_NUMBER

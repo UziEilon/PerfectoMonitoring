@@ -6,8 +6,8 @@ import com.twilio.rest.api.v2010.account.Message;
 
 public class notificationUtils {
 
-    static final String ACCOUNT_SID = "AC5c7d3e87efd22f308deb023e4d5eaedc";
-    static final String AUTH_TOKEN = "53724a1be28af155e27f06c667d76f34";
+    static final String ACCOUNT_SID = "[Twilio account ID]";
+    static final String AUTH_TOKEN = "[ Twilio AUTH_TOKEN] ";
 
 
     public static void sendSMS(String msg ,String phoneNumber) {
